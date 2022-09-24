@@ -4,30 +4,30 @@ defmodule People.Person do
             birthday: nil,
             location: "home"
 
-  def full_name(%Person{first_name: first_name, last_name: last_name} = person) do
-    "#{first_name} #{last_name}"
+  def full_name(%__MODULE__{} = person) do
+    "#{person.first_name} #{person.last_name}"
   end
 
-  def age(%Person{birthday: birthday} = person) do
-    days = Date.diff(Date.utc_today(), birthday)
+  def age(%__MODULE__{} = person) do
+    days = Date.diff(Date.utc_today(), person.birthday)
     days / 365.25
   end
 
-  def toggle_location(%Person{location: "away"} = person) do
+  def toggle_location(%__MODULE__{location: "away"} = person) do
     person |> set_location("home")
   end
 
-  def toggle_location(%Person{location: "home"} = person) do
+  def toggle_location(%__MODULE__{location: "home"} = person) do
     person |> set_location("away")
   end
 
-  defp set_location(%Person{} = person, location) do
+  defp set_location(%__MODULE__{} = person, location) do
     %{person | location: location}
   end
 
   defimpl Inspect do
     def inspect(
-          %Person{
+          %{
             first_name: first_name,
             last_name: last_name,
             location: location
